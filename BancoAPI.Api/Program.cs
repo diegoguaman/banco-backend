@@ -7,24 +7,29 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
+// Crear la aplicación
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// ✅ 3. Configurar el pipeline de la aplicación
+
+// 🔹 Habilitar Swagger en desarrollo y producción
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
-    app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// 🔹 En producción, es recomendable activar HTTPS
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection(); // Habilita redirección a HTTPS en producción
+}
+
 // ✅ 4. Habilitar rutas de controladores
 app.UseAuthorization();
 app.MapControllers();
-//app.UseHttpsRedirection();
 
+// 🔹 Endpoint de prueba "weatherforecast"
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -46,6 +51,8 @@ app.MapGet("/weatherforecast", () =>
 
 app.Run();
 
+
+// ✅ 5. Definir el modelo para el endpoint "weatherforecast"
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);

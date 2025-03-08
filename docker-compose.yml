@@ -1,0 +1,28 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: banco-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: BancoDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: banco-api
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=BancoDB;Username=postgres;Password=mysecretpassword"
+
+volumes:
+  postgres_data:

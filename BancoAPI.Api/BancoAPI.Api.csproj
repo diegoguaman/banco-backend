@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Paquete para OpenAPI y Swagger -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
+    
+    <!-- Paquete para PostgreSQL con Entity Framework Core -->
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+
+    <!-- Agregado: Entity Framework Core base -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+    
+    <!-- Agregado: Entity Framework Core herramientas (para migraciones) -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4" />
+    
+    <!-- Agregado: Entity Framework Core herramientas para CLI -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Referencias a los otros proyectos de la solución -->
+    <ProjectReference Include="..\BancoAPI.Application\BancoAPI.Application.csproj" />
+    <ProjectReference Include="..\BancoAPI.Infrastructure\BancoAPI.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
+
