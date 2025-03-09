@@ -1,0 +1,38 @@
+name: CI/CD for .NET API
+
+on:
+  push:
+    branches:
+      - develop  # Se ejecuta en la rama develop
+  pull_request:
+    branches:
+      - main  # Se ejecuta antes de fusionar a main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Instalar .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x  # O 9.0.x según tu configuración
+
+      - name: Restaurar dependencias
+        run: dotnet restore
+
+      - name: Compilar la API
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Ejecutar pruebas unitarias
+        run: dotnet test --no-build --configuration Release --logger trx
+
+      - name: Guardar resultados de pruebas
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: "**/TestResults/*.trx"
